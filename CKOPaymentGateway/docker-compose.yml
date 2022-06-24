@@ -1,0 +1,25 @@
+version: '3'
+services:
+  ms-sql-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Welcome2000!"
+      MSSQL_PID: Express
+    ports:
+      - "1480:1433"
+  redis:
+    image: redis
+    ports:
+      - "6380:6379"
+  rabbit-mq:
+    image: rabbitmq:3-management
+    ports:
+      - "5680:5672"
+      - "15680:15672"
+  payment-gateway:
+    build: .
+    environment:
+      DBServer: "ms-sql-server"
+    ports:
+      - "8080:80"
